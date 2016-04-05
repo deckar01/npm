@@ -53,14 +53,15 @@ test('lifecycle propagate signal term to child', function (t) {
 
   var innerChildPid
   var child = spawn(npm, ['run', 'forever'], {
-    cwd: pkg
+    cwd: pkg,
+    detached: true
   })
   child.stderr.on('data', function (data) {
     innerChildPid = Number.parseInt(data.toString(), 10)
     t.doesNotThrow(function () {
       process.kill(innerChildPid, 0) // inner child should be running
     })
-    child.kill() // send SIGTERM to npm
+    process.kill(-child.pid) // send SIGTERM to npm
   })
   child.on('exit', function (code, signal) {
     t.equal(code, null)
