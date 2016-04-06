@@ -41,8 +41,8 @@ test('lifecycle signal abort', function (t) {
     cwd: pkg
   })
   child.on('close', function (code, signal) {
-    t.equal(code, null)
-    t.equal(signal, 'SIGSEGV')
+    t.equal(code, 1)
+    t.equal(signal, null)
     t.end()
   })
 })
